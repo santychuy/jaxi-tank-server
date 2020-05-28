@@ -1,15 +1,16 @@
-import { GraphQLServer } from 'graphql-yoga';
+import express, { json, urlencoded } from 'express';
+import helmet from 'helmet';
+import morgan from 'morgan';
+import cors from 'cors';
 
-import { typeDefs } from './graphql/typeDefs';
-import { resolvers } from './graphql/resolvers';
-import { initMiddlewares } from './middlewares';
+import { initGraphql } from './graphql';
 
-const server = new GraphQLServer({
-  resolvers,
-  typeDefs,
-});
+const app = express();
 
-const { express } = server;
-initMiddlewares(express);
+app.use(helmet());
+app.use(cors());
+app.use(json());
+app.use(urlencoded({ extended: true }));
+app.use(morgan('dev'));
 
-export default server;
+export default initGraphql(app);

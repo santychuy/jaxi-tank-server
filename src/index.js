@@ -1,8 +1,12 @@
 import './database';
-import server from './app';
-import GraphqlConfig from './config/graphqlServer';
+import { config } from './config';
+import app from './app';
 
-server.start(GraphqlConfig, ({ port }) => {
-  console.log(`Server on: http://localhost:${port}/graphql`);
-  console.log(`Playground: http://localhost:${port}/playground`);
-});
+const {
+  APP_SETTINGS: { PORT },
+} = config;
+
+(() => {
+  app.listen(PORT);
+  console.log(`🚀 Server ready at http://localhost:${PORT}/graphql`);
+})();
